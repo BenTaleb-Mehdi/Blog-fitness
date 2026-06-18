@@ -1,20 +1,26 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion"; // 🛠️ Imported 'Variants' type safely
 import { BookOpen, Activity, Target, Flame } from "lucide-react";
 import { useLanguage } from "../../context/LanguageContext";
 
 export default function Hero() {
   const { t } = useLanguage();
 
-  const containerVariants = {
+  // ⚙️ FIXED: Added explicit strict typing 'Variants' to the containers
+  const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.12 } },
   };
 
-  const itemVariants = {
+  const itemVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
+    // 🛠️ THE FIX: Added 'as const' to freeze the cubic-bezier array layout bounds
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as const } 
+    },
   };
 
   return (
@@ -51,7 +57,7 @@ export default function Hero() {
           </motion.button>
         </motion.div>
 
-        {/* --- THE UNIQUE CENTER VISUAL PORTAL (RESTORED) --- */}
+        {/* --- THE UNIQUE CENTER VISUAL PORTAL --- */}
         <motion.div variants={itemVariants} className="relative mt-16 w-full max-w-3xl h-[280px] md:h-[380px] rounded-[40px] overflow-hidden border border-zinc-800 bg-zinc-950/20 shadow-3xl group">
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#27272a_1px,transparent_1px),linear-gradient(to_bottom,#27272a_1px,transparent_1px)] bg-[size:5rem_5rem] opacity-10 z-20 pointer-events-none" />
           <div className="absolute inset-0 bg-radial from-transparent via-[#09090b]/40 to-[#09090b] z-10 pointer-events-none" />
